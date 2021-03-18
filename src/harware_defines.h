@@ -1,4 +1,3 @@
-#include <Arduino.h>
 
 #define TBI_SERIALBAUD 115200
 
@@ -26,6 +25,9 @@
 #define TBI_ZDRIVERPINPOLARITY LOW // The Stepper Motors Active Step and Dir Polarity
 #define TBI_ZINVERTDIRPIN false //Inverts the Dir Pin
 #define TBI_ZJOYSTICKSPEED 1200 //Default Joystick Speed
+
+#define TBI_XPIDSAMPLETIME 5 //PID Compute Sample Time;
+#define TBI_ZPIDSAMPLETIME 5 //PID Computer Sample Time;
 
 
 
