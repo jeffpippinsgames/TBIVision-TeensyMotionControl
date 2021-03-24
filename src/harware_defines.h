@@ -26,8 +26,8 @@
 #define TBI_ZINVERTDIRPIN false //Inverts the Dir Pin
 #define TBI_ZJOYSTICKSPEED 1200 //Default Joystick Speed
 
-#define TBI_XPIDSAMPLETIME 5 //PID Compute Sample Time;
-#define TBI_ZPIDSAMPLETIME 5 //PID Computer Sample Time;
+#define TBI_XPIDSAMPLETIME 1 //PID Compute Sample Time;
+#define TBI_ZPIDSAMPLETIME 1 //PID Computer Sample Time;
 
 
 
