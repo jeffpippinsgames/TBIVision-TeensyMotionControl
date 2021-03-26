@@ -66,6 +66,11 @@ byte outgoing_serial_buffer[BUFFER_SIZE];
 //setup() function. Initializes the Hardware of the MCU
 void setup() 
 {
+  //Setup Limit Switches
+  pinMode(TBI_XLIMITPINPLUS, INPUT_PULLUP);
+  pinMode(TBI_ZLIMITPINPLUS, INPUT_PULLUP);
+  pinMode(TBI_XLIMITPINMINUS, INPUT_PULLUP);
+  pinMode(TBI_ZLIMITPINMINUS, INPUT_PULLUP);
   //Turn off LED Until Inititalized
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, LOW);
@@ -125,12 +130,10 @@ void loop()
     digitalWrite(LED_BUILTIN, HIGH); //Make Sure LED Is On. Everything is Fine.
     //Get The Next Command
     processIncommingSerialCommand(incomming_serial_buffer);
-
-    //Process Command
-
     //Update PID
 
     //Update Motion Control
+    
 
   }
   else //Bad JooJoo. We lost the Serial Connection. TURN IT OFF
@@ -140,6 +143,7 @@ void loop()
     if(x_controller.isRunning()) x_controller.stop();
     if(z_controller.isRunning()) z_controller.stop();
   }
+
 }
 //--------------------------------------------------------------------------------------------------------------------
 
@@ -259,4 +263,10 @@ void clearOutgoingSerialBuffer()
   for(int i = 0; i < BUFFER_SIZE; ++i) outgoing_serial_buffer[i] = 0x00;
 }
 
+void processLimitSwitches()
+{
+  
+  
+
+}
 //--------------------------------------------------------------------------------------------------------------------

@@ -7,8 +7,10 @@
 #define TBI_ZDIRPIN  5
 #define TBI_XENABLEPIN 3
 #define TBI_ZENABLEPIN 6
-#define TBI_XLIMITPIN 7
-#define TBI_ZLIMITPIN 8
+#define TBI_XLIMITPINPLUS 7
+#define TBI_ZLIMITPINPLUS 8
+#define TBI_XLIMITPINMINUS 9
+#define TBI_ZLIMITPINMINUS 10
 
 #define TBI_XMAXSPEED 4000 //Steps Per Sec
 #define TBI_XPULLINSPEED 200 //Initial Speed Without Accel. 
