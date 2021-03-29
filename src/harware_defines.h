@@ -1,3 +1,7 @@
+#ifndef __TBIVISION_HARWARE_DEFINES__
+#define __TBIVISION_HARDWARE_DEFINES__
+
+#define __DEBUG 
 
 #define TBI_SERIALBAUD 115200
 
@@ -33,3 +37,4 @@
 
 
 
+#endif //__TBIVISION_HARDWARE_DEFINES__

@@ -19,24 +19,19 @@
 #include <PID_v1.h> //For function documentation see:  http://playground.arduino.cc/Code/PIDLibrary
 #include "harware_defines.h"
 #include "tbi-shared-enums-structs.h"
+#include "tbilimitswitches.hpp"
+#include "tbicommandmanager.hpp"
+#include "tbicontrolstatuscontainer.hpp"
 //--------------------------------------------------------------------------------------------------------------------
-
-
-
-
-//--------------------------------------------------------------------------------------------------------------------
-//Defines
-#define __DEBUG
-#define BUFFER_SIZE 8
-//--------------------------------------------------------------------------------------------------------------------
-
 
 
 
 //--------------------------------------------------------------------------------------------------------------------
 //Global Variables
-PIDState_t pid_state = TBI_PID_STATE_OFF;
-MotionStatus_t motion_status = TBI_MOTION_STATUS_IDLE;
+TBICommandManager command_manager;
+TBILimitSwitches limit_switches;
+TBIControlStatusContainer control_status;
+
 
 
 Stepper x_motor(TBI_XSTEPPIN, TBI_XDIRPIN);
@@ -51,12 +46,6 @@ PID xPID(&xPID_input, &xPID_output, &xPID_setpoint, x_Kp, x_Ki, x_Kd, P_ON_E, DI
 double zPID_setpoint, zPID_input, zPID_output;
 double z_Kp=2, z_Ki=5, z_Kd=1;
 PID zPID(&zPID_input, &zPID_output, &zPID_setpoint, z_Kp, z_Ki, z_Kd, P_ON_E, DIRECT);
-
-
-
-byte incomming_serial_buffer[BUFFER_SIZE];
-byte outgoing_serial_buffer[BUFFER_SIZE];
-
 //--------------------------------------------------------------------------------------------------------------------
 
 
@@ -71,6 +60,8 @@ void setup()
   pinMode(TBI_ZLIMITPINPLUS, INPUT_PULLUP);
   pinMode(TBI_XLIMITPINMINUS, INPUT_PULLUP);
   pinMode(TBI_ZLIMITPINMINUS, INPUT_PULLUP);
+  limit_switches.UpdateLimitSwitchStates(&control_status);
+
   //Turn off LED Until Inititalized
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, LOW);
@@ -118,110 +109,31 @@ void setup()
 void loop()
  {
 
-
-
+   control_status.clearErrors();
+   limit_switches.UpdateLimitSwitchStates(&control_status);
 
   //If there is a Serial Connection Then Process The Commands.
   if(Serial.dtr() && Serial)
   {
-    
-    clearIncommingSerialBuffer(); //Clear Serial Buffers
-    clearOutgoingSerialBuffer(); //Clear Serial Buffers
     digitalWrite(LED_BUILTIN, HIGH); //Make Sure LED Is On. Everything is Fine.
-    //Get The Next Command
-    processIncommingSerialCommand(incomming_serial_buffer);
+    command_manager.processCommandData(&x_controller, &z_controller, &x_motor, &z_motor, &limit_switches, &control_status);
     //Update PID
 
     //Update Motion Control
-    
-
   }
   else //Bad JooJoo. We lost the Serial Connection. TURN IT OFF
   {
     digitalWrite(LED_BUILTIN, LOW); // Turn Off LED. Bad JooJoo....
-    pid_state = TBI_PID_STATE_OFF;
+    control_status.SetOperationStatus(TBI_OPERATION_ERROR);
+    control_status.SetErrorCode(TBI_ERROR_LOST_SERIAL_NO_DTR);
+    control_status.SetControlMode(TBI_CONTROL_MODE_MANUAL_MODE);
+    control_status.SetMotionStatus(TBI_MOTION_STATUS_IDLE);
     if(x_controller.isRunning()) x_controller.stop();
     if(z_controller.isRunning()) z_controller.stop();
   }
 
 }
 //--------------------------------------------------------------------------------------------------------------------
-
-
-//--------------------------------------------------------------------------------------------------------------------
-//Command Processing Functions.
-//--------------------------------------------------------------------------------------------------------------------
-void processIncommingSerialCommand(byte* _data)
-{
-  if(!_data) return; 
-  if(Serial.available() == BUFFER_SIZE)
-  {
-      Serial.readBytes((char*)_data, BUFFER_SIZE);
-      switch(_data[0])
-      {
-        case TBI_CMD_STOP_MOVEMENT:
-          processStopMovementCmd();
-          break;
-        case TBI_CMD_JOG_UP:
-          processJogUpCmd();
-          break;
-        case TBI_CMD_JOG_DOWN:
-          processJogDownCmd();
-          break;
-        case TBI_CMD_JOG_LEFT:
-          processJogLeftCmd();
-          break;
-        case TBI_CMD_JOG_RIGHT:
-          processJogRightCmd();
-          break;
-        
-      }
-
-
-  
-  }
-}
-
-void processJogUpCmd()
-{
-  if(motion_status != TBI_MOTION_STATUS_IDLE) return;
-  motion_status = TBI_MOTION_STATUS_JOGGING;
-  z_controller.overrideSpeed(.5);
-  z_controller.rotateAsync(z_motor);
-}
-
-void processJogDownCmd()
-{
-  if(motion_status != TBI_MOTION_STATUS_IDLE) return;
-  motion_status = TBI_MOTION_STATUS_JOGGING;
-  z_controller.overrideSpeed(-.5);
-  z_controller.rotateAsync(z_motor);
-}
-
-void processJogLeftCmd()
-{
-  if(motion_status != TBI_MOTION_STATUS_IDLE) return;
-  motion_status = TBI_MOTION_STATUS_JOGGING;
-  x_controller.overrideSpeed(.5);
-  x_controller.rotateAsync(x_motor);
-}
-
-void processJogRightCmd()
-{
-  if(motion_status != TBI_MOTION_STATUS_IDLE) return;
-  motion_status = TBI_MOTION_STATUS_JOGGING;
-  x_controller.overrideSpeed(-.5);
-  x_controller.rotateAsync(x_motor);  
-}
-
-void processStopMovementCmd()
-{
-  motion_status = TBI_MOTION_STATUS_IDLE;
-  x_controller.stop();
-  z_controller.stop();
-}
-
-
 
 
 
@@ -231,42 +143,19 @@ int parseIntData(byte *_data)
 {
   return 0;
 }
-
+//--------------------------------------------------------------------------------------------------------------------
 float parseFloatData(byte *_data)
 {
   return 0.0;
 }
-
+//--------------------------------------------------------------------------------------------------------------------
 double parseDoubleData(byte *_data)
 {
   return 0.0;
 }
-
+//--------------------------------------------------------------------------------------------------------------------
 long parseLongData(byte *_data)
 {
   return 0;
-}
-//--------------------------------------------------------------------------------------------------------------------
-
-
-
-
-//--------------------------------------------------------------------------------------------------------------------
-//Misc Functions
-void clearIncommingSerialBuffer()
-{
-    for(int i = 0; i < BUFFER_SIZE; ++i) incomming_serial_buffer[i] = 0x00;
-}
-
-void clearOutgoingSerialBuffer()
-{
-  for(int i = 0; i < BUFFER_SIZE; ++i) outgoing_serial_buffer[i] = 0x00;
-}
-
-void processLimitSwitches()
-{
-  
-  
-
 }
 //--------------------------------------------------------------------------------------------------------------------
