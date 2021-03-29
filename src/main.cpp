@@ -32,8 +32,6 @@ TBICommandManager command_manager;
 TBILimitSwitches limit_switches;
 TBIControlStatusContainer control_status;
 
-
-
 Stepper x_motor(TBI_XSTEPPIN, TBI_XDIRPIN);
 Stepper z_motor(TBI_ZSTEPPIN, TBI_ZDIRPIN);
 RotateControl x_controller;
