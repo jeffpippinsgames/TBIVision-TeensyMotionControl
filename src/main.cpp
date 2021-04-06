@@ -113,7 +113,7 @@ void loop()
   //If there is a Serial Connection Then Process The Commands.
   if(Serial.dtr() && Serial)
   {
-    digitalWrite(LED_BUILTIN, HIGH); //Make Sure LED Is On. Everything is Fine.
+    //digitalWrite(LED_BUILTIN, HIGH); //Make Sure LED Is On. Everything is Fine.
     command_manager.processCommandData(&x_controller, &z_controller, &x_motor, &z_motor, &limit_switches, &control_status);
     //Update PID
 

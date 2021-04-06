@@ -18,11 +18,11 @@ void TBICommandManager::processCommandData(RotateControl* _x_control, RotateCont
         //----------------------------------------------------------
         case TBI_CMD_STOP_MOVEMENT:
           this->doStopMovement(_x_control, _z_control, _control_status);
-          Serial.flush();
+          digitalWrite(LED_BUILTIN, HIGH);
           break;
         //----------------------------------------------------------
         case TBI_CMD_JOG_UP:
-        /*
+        
           if(_limitswitches->GetZPlusLimitSwitchState() == TBI_LIMIT_SWITCH_STATE_TRIPPED)
           {
             this->doStopMovement(_x_control, _z_control, _control_status);
@@ -31,11 +31,7 @@ void TBICommandManager::processCommandData(RotateControl* _x_control, RotateCont
           {
             this->doMotorRotation(_z_control, _z_motor, _control_status, _limitswitches, .5);
           }
-          */
-         
-         this->doMotorRotation(_z_control, _z_motor, _control_status, _limitswitches, .5);
           break;
-          /*
         //----------------------------------------------------------
         case TBI_CMD_JOG_DOWN:
           if(_limitswitches->GetZMinusLimitSwitchState() == TBI_LIMIT_SWITCH_STATE_TRIPPED)
@@ -47,6 +43,7 @@ void TBICommandManager::processCommandData(RotateControl* _x_control, RotateCont
             this->doMotorRotation(_z_control, _z_motor, _control_status, _limitswitches, -.5);
           }
           break;
+          
         //----------------------------------------------------------
         case TBI_CMD_JOG_LEFT:
           if(_limitswitches->GetXMinusLimitSwitchState() == TBI_LIMIT_SWITCH_STATE_TRIPPED)
@@ -68,7 +65,7 @@ void TBICommandManager::processCommandData(RotateControl* _x_control, RotateCont
           {
             this->doMotorRotation(_x_control, _x_motor, _control_status, _limitswitches, -.5);
           }
-          break; */
+          break; 
         //---------------------------------------------------------- 
       }
   }

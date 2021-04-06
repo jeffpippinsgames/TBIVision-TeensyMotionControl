@@ -2,7 +2,10 @@
 
 TBILimitSwitches::TBILimitSwitches()
 {
-
+    pinMode(TBI_XLIMITPINPLUS, INPUT_PULLUP);
+    pinMode(TBI_XLIMITPINMINUS, INPUT_PULLUP);
+    pinMode(TBI_ZLIMITPINPLUS, INPUT_PULLUP);
+    pinMode(TBI_ZLIMITPINMINUS, INPUT_PULLUP);
 }
 
 void TBILimitSwitches::UpdateLimitSwitchStates(TBIControlStatusContainer* _controlstatus)
