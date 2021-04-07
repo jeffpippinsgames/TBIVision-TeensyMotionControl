@@ -10,6 +10,12 @@ TBILimitSwitches::TBILimitSwitches()
 
 void TBILimitSwitches::UpdateLimitSwitchStates(TBIControlStatusContainer* _controlstatus)
 {
+    x_limit_plus_state = TBI_LIMIT_SWITCH_STATE_OK;
+    x_limit_minus_state = TBI_LIMIT_SWITCH_STATE_OK;
+    z_limit_plus_state = TBI_LIMIT_SWITCH_STATE_OK;
+    z_limit_minus_state = TBI_LIMIT_SWITCH_STATE_OK;
+
+/*
         //All Limit Switches are Active Low.
     switch(digitalReadFast(TBI_XLIMITPINPLUS))
     {
@@ -58,6 +64,7 @@ void TBILimitSwitches::UpdateLimitSwitchStates(TBIControlStatusContainer* _contr
             z_limit_minus_state = TBI_LIMIT_SWITCH_STATE_OK;
             break;
     }
+    */
 }
 
 LimitSwitchState_t TBILimitSwitches::GetXPLusLimitSwitchState()

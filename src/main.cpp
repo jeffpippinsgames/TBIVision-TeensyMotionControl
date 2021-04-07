@@ -54,11 +54,14 @@ PID zPID(&zPID_input, &zPID_output, &zPID_setpoint, z_Kp, z_Ki, z_Kd, P_ON_E, DI
 void setup() 
 {
   //Setup Limit Switches
-  pinMode(TBI_XLIMITPINPLUS, INPUT_PULLUP);
-  pinMode(TBI_ZLIMITPINPLUS, INPUT_PULLUP);
-  pinMode(TBI_XLIMITPINMINUS, INPUT_PULLUP);
-  pinMode(TBI_ZLIMITPINMINUS, INPUT_PULLUP);
   limit_switches.UpdateLimitSwitchStates(&control_status);
+  pinMode(TBI_ERRORPIN, OUTPUT);
+
+  //ENable Pins
+  pinMode(TBI_XENABLEPIN, OUTPUT);
+  pinMode(TBI_ZENABLEPIN, OUTPUT);
+  digitalWrite(TBI_XENABLEPIN, HIGH);
+  digitalWrite(TBI_ZENABLEPIN, HIGH);
 
   //Turn off LED Until Inititalized
   pinMode(LED_BUILTIN, OUTPUT);
@@ -71,14 +74,12 @@ void setup()
   x_motor.setPullInOutSpeed(TBI_XPULLOUTSPEED, TBI_XPULLOUTSPEED);
   x_motor.setAcceleration(TBI_XMAXACCEL);
   x_motor.setStepPinPolarity(TBI_XDRIVERPINPOLARITY);
-  x_motor.setInverseRotation(TBI_XINVERTDIRPIN);
   //Z Motor Setup
   z_motor.setMaxSpeed(TBI_ZMAXSPEED);
   z_motor.setPullInSpeed(TBI_ZPULLINSPEED);
   z_motor.setPullInOutSpeed(TBI_ZPULLOUTSPEED, TBI_ZPULLOUTSPEED);
   z_motor.setAcceleration(TBI_ZMAXACCEL);
   z_motor.setStepPinPolarity(TBI_ZDRIVERPINPOLARITY);
-  z_motor.setInverseRotation(TBI_ZINVERTDIRPIN);
   //
   x_motor.setPosition(0);
   z_motor.setPosition(0);
@@ -97,6 +98,16 @@ void setup()
   digitalWrite(LED_BUILTIN, HIGH);
   
   Serial.println("TBIVision-TeensyMotionControl Inititalzed and Connected. Ready For Commands");
+
+  //Make Sure the Timers for the Controls are ok
+  if(!x_controller.isOk() || !z_controller.isOk()) 
+  {
+    digitalWrite(TBI_ERRORPIN, HIGH);
+  }
+  else
+  {
+    digitalWrite(TBI_ERRORPIN, LOW);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------
 
