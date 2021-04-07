@@ -15,19 +15,20 @@
 #define TBI_ZLIMITPINPLUS 8
 #define TBI_XLIMITPINMINUS 9
 #define TBI_ZLIMITPINMINUS 10
+#define TBI_ERRORPIN 12
 
-#define TBI_XMAXSPEED 4000 //Steps Per Sec
-#define TBI_XPULLINSPEED 200 //Initial Speed Without Accel. 
-#define TBI_XPULLOUTSPEED 200 //Initial Speed Without Accel. 
-#define TBI_XMAXACCEL 120 //Steps Per Sec ^2
+#define TBI_XMAXSPEED 40000//Steps Per Sec
+#define TBI_XPULLINSPEED 5 //Initial Speed Without Accel. 
+#define TBI_XPULLOUTSPEED 5 //Initial Speed Without Accel. 
+#define TBI_XMAXACCEL 40000//Steps Per Sec ^2
 #define TBI_XDRIVERPINPOLARITY LOW // The Stepper Motors Active Step and Dir Polarity
 #define TBI_XINVERTDIRPIN false //Inverts the Dir Pin
 #define TBI_XJOYSTICKSPEED 1200 //Default Joystick Speed
 
-#define TBI_ZMAXSPEED 4000 //Steps Per Sec
-#define TBI_ZPULLINSPEED 200 //Initial Speed Without Accel. 
-#define TBI_ZPULLOUTSPEED 200 //Initial Speed Without Accel. 
-#define TBI_ZMAXACCEL 120 //Steps Per Sec ^2
+#define TBI_ZMAXSPEED 400 //Steps Per Sec
+#define TBI_ZPULLINSPEED 5 //Initial Speed Without Accel. 
+#define TBI_ZPULLOUTSPEED 5 //Initial Speed Without Accel. 
+#define TBI_ZMAXACCEL 50 //Steps Per Sec ^2
 #define TBI_ZDRIVERPINPOLARITY LOW // The Stepper Motors Active Step and Dir Polarity
 #define TBI_ZINVERTDIRPIN false //Inverts the Dir Pin
 #define TBI_ZJOYSTICKSPEED 1200 //Default Joystick Speed
