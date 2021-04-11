@@ -30,7 +30,7 @@ void TBICommandManager::processCommandData(RotateControl* _x_control, RotateCont
           else
           {
             _z_motor->setMaxSpeed(TBI_ZMAXSPEED);
-            this->doMotorRotation(_z_control, _z_motor, _control_status, _limitswitches, .5);
+            this->doMotorRotation(_z_control, _z_motor, _control_status, _limitswitches);
           }
           break;
         //----------------------------------------------------------
@@ -42,7 +42,7 @@ void TBICommandManager::processCommandData(RotateControl* _x_control, RotateCont
           else
           {
             _z_motor->setMaxSpeed(-TBI_ZMAXSPEED);
-            this->doMotorRotation(_z_control, _z_motor, _control_status, _limitswitches, -.5);
+            this->doMotorRotation(_z_control, _z_motor, _control_status, _limitswitches);
           }
           break;
           
@@ -55,7 +55,7 @@ void TBICommandManager::processCommandData(RotateControl* _x_control, RotateCont
           else
           {
               _x_motor->setMaxSpeed(TBI_XMAXSPEED);
-              this->doMotorRotation(_x_control, _x_motor, _control_status, _limitswitches, .5);
+              this->doMotorRotation(_x_control, _x_motor, _control_status, _limitswitches);
           }
           break;
         //----------------------------------------------------------
@@ -67,7 +67,7 @@ void TBICommandManager::processCommandData(RotateControl* _x_control, RotateCont
           else
           {
             _x_motor->setMaxSpeed(-TBI_XMAXSPEED);
-            this->doMotorRotation(_x_control, _x_motor, _control_status, _limitswitches, -.5);
+            this->doMotorRotation(_x_control, _x_motor, _control_status, _limitswitches);
           }
           break; 
         //---------------------------------------------------------- 
@@ -79,10 +79,9 @@ void TBICommandManager::processCommandData(RotateControl* _x_control, RotateCont
 //Command Processing Functions.
 //--------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------
-void TBICommandManager::doMotorRotation(RotateControl *_rotcontroller, Stepper* _motor, TBIControlStatusContainer *_control_status, TBILimitSwitches* _limitswitches, float _speed_fraction)
+void TBICommandManager::doMotorRotation(RotateControl *_rotcontroller, Stepper* _motor, TBIControlStatusContainer *_control_status, TBILimitSwitches* _limitswitches)
 {
     if(_control_status->GetMotionStatus() != TBI_MOTION_STATUS_IDLE) return;
-    if(_rotcontroller->isRunning()) return;
   //_rotcontroller->overrideSpeed(_speed_fraction);
   _rotcontroller->rotateAsync(*_motor);
   _control_status->SetMotionStatus(TBI_MOTION_STATUS_JOGGING);

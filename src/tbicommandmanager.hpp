@@ -24,7 +24,7 @@ class TBICommandManager
         TBICommandManager();
         void processCommandData(RotateControl* _x_control, RotateControl* _z_control, Stepper* _x_motor, Stepper* _z_motor, TBILimitSwitches* _limit_switches, TBIControlStatusContainer* _control_status);
     private:
-        void doMotorRotation(RotateControl *_rotcontroller, Stepper* _motor, TBIControlStatusContainer *_control_status, TBILimitSwitches* _limitswitches, float _speed_fraction);
+        void doMotorRotation(RotateControl *_rotcontroller, Stepper* _motor, TBIControlStatusContainer *_control_status, TBILimitSwitches* _limitswitches);
         void doStopMovement(RotateControl *_x_control, RotateControl* _z_control, TBIControlStatusContainer* _control_status);
         
 };
