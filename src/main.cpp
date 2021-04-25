@@ -56,6 +56,8 @@ void setup()
   //Setup Limit Switches
   limit_switches.UpdateLimitSwitchStates(&control_status);
   pinMode(TBI_ERRORPIN, OUTPUT);
+  pinMode(TBI_LOGICLEVELOEPIN, OUTPUT);
+  digitalWrite(TBI_LOGICLEVELOEPIN, HIGH); //Enable the Logic Level Converter.
 
   //ENable Pins
   pinMode(TBI_XENABLEPIN, OUTPUT);

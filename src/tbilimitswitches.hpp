@@ -14,17 +14,13 @@
 class TBILimitSwitches
 {
     private:
-        LimitSwitchState_t x_limit_plus_state;
-        LimitSwitchState_t x_limit_minus_state;
-        LimitSwitchState_t z_limit_plus_state;
-        LimitSwitchState_t z_limit_minus_state;
+        LimitSwitchState_t x_limit_state;
+        LimitSwitchState_t z_limit_state;
     public:
         TBILimitSwitches();
         void UpdateLimitSwitchStates(TBIControlStatusContainer* _controlstatus);
-        LimitSwitchState_t GetXPLusLimitSwitchState();
-        LimitSwitchState_t GetXMinusLimitSwitchState();
-        LimitSwitchState_t GetZPlusLimitSwitchState();
-        LimitSwitchState_t GetZMinusLimitSwitchState();
+        LimitSwitchState_t GetXLimitSwitchState();
+        LimitSwitchState_t GetZLimitSwitchState();
 };
 
 #endif

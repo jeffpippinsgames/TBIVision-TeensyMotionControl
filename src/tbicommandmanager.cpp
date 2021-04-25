@@ -23,9 +23,9 @@ void TBICommandManager::processCommandData(RotateControl* _x_control, RotateCont
         //----------------------------------------------------------
         case TBI_CMD_JOG_UP:
         
-          if(_limitswitches->GetZPlusLimitSwitchState() == TBI_LIMIT_SWITCH_STATE_TRIPPED)
+          if(_limitswitches->GetZLimitSwitchState() == TBI_LIMIT_SWITCH_STATE_TRIPPED)
           {
-            this->doStopMovement(_x_control, _z_control, _control_status);
+            this->doStopMovement(_z_control, _z_control, _control_status);
           } 
           else
           {
@@ -35,9 +35,9 @@ void TBICommandManager::processCommandData(RotateControl* _x_control, RotateCont
           break;
         //----------------------------------------------------------
         case TBI_CMD_JOG_DOWN:
-          if(_limitswitches->GetZMinusLimitSwitchState() == TBI_LIMIT_SWITCH_STATE_TRIPPED)
+          if(_limitswitches->GetZLimitSwitchState() == TBI_LIMIT_SWITCH_STATE_TRIPPED)
           {
-            this->doStopMovement(_x_control, _z_control, _control_status);
+            this->doStopMovement(_z_control, _z_control, _control_status);
           } 
           else
           {
@@ -48,9 +48,9 @@ void TBICommandManager::processCommandData(RotateControl* _x_control, RotateCont
           
         //----------------------------------------------------------
         case TBI_CMD_JOG_LEFT:
-          if(_limitswitches->GetXMinusLimitSwitchState() == TBI_LIMIT_SWITCH_STATE_TRIPPED)
+          if(_limitswitches->GetXLimitSwitchState() == TBI_LIMIT_SWITCH_STATE_TRIPPED)
           {
-            this->doStopMovement(_x_control, _z_control, _control_status);
+            this->doStopMovement(_x_control, _x_control, _control_status);
           } 
           else
           {
@@ -60,9 +60,9 @@ void TBICommandManager::processCommandData(RotateControl* _x_control, RotateCont
           break;
         //----------------------------------------------------------
         case TBI_CMD_JOG_RIGHT:
-          if(_limitswitches->GetXPLusLimitSwitchState() == TBI_LIMIT_SWITCH_STATE_TRIPPED)
+          if(_limitswitches->GetXLimitSwitchState() == TBI_LIMIT_SWITCH_STATE_TRIPPED)
           {
-            this->doStopMovement(_x_control, _z_control, _control_status);
+            this->doStopMovement(_x_control, _x_control, _control_status);
           } 
           else
           {
@@ -82,7 +82,6 @@ void TBICommandManager::processCommandData(RotateControl* _x_control, RotateCont
 void TBICommandManager::doMotorRotation(RotateControl *_rotcontroller, Stepper* _motor, TBIControlStatusContainer *_control_status, TBILimitSwitches* _limitswitches)
 {
     if(_control_status->GetMotionStatus() != TBI_MOTION_STATUS_IDLE) return;
-  //_rotcontroller->overrideSpeed(_speed_fraction);
   _rotcontroller->rotateAsync(*_motor);
   _control_status->SetMotionStatus(TBI_MOTION_STATUS_JOGGING);
 }
