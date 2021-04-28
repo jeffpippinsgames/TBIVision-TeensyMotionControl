@@ -15,6 +15,16 @@ void TBICommandManager::processCommandData(RotateControl* _x_control, RotateCont
       _cmd = (byte)Serial.read();
       switch(_cmd)
       {
+        case TBI_CMD_TOGGLE_LASER_POWER:
+            if(digitalReadFast(TBI_LASERRELAYPIN) == HIGH)
+            {
+              digitalWriteFast(TBI_LASERRELAYPIN, LOW);
+            }
+            else
+            {
+              digitalWriteFast(TBI_LASERRELAYPIN, HIGH);
+            }
+        break;
         //----------------------------------------------------------
         case TBI_CMD_STOP_MOVEMENT:
           this->doStopMovement(_x_control, _z_control, _control_status);

@@ -55,7 +55,8 @@ void setup()
 {
   //Setup Limit Switches
   limit_switches.UpdateLimitSwitchStates(&control_status);
-  pinMode(TBI_ERRORPIN, OUTPUT);
+  pinMode(TBI_LASERRELAYPIN, OUTPUT);
+  digitalWrite(TBI_LASERRELAYPIN, LOW); //Turn Off Laser Power Relay
   pinMode(TBI_LOGICLEVELOEPIN, OUTPUT);
   digitalWrite(TBI_LOGICLEVELOEPIN, HIGH); //Enable the Logic Level Converter.
 
@@ -104,11 +105,11 @@ void setup()
   //Make Sure the Timers for the Controls are ok
   if(!x_controller.isOk() || !z_controller.isOk()) 
   {
-    digitalWrite(TBI_ERRORPIN, HIGH);
+    
   }
   else
   {
-    digitalWrite(TBI_ERRORPIN, LOW);
+    
   }
 }
 //--------------------------------------------------------------------------------------------------------------------
@@ -141,6 +142,7 @@ void loop()
     control_status.SetMotionStatus(TBI_MOTION_STATUS_IDLE);
     if(x_controller.isRunning()) x_controller.stop();
     if(z_controller.isRunning()) z_controller.stop();
+    digitalWriteFast(TBI_LASERRELAYPIN, LOW);
   }
 
 }
